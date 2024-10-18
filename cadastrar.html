@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Usuário/Produto</title>
+    <link rel="stylesheet" href="style/cadastro.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastrar Usuário ou Produto</h1>
+        <form id="cadastrarForm">
+            <div class="input-group">
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" required>
+                    <option value="">Selecione</option>
+                    <option value="usuario">Usuário</option>
+                    <option value="produto">Produto</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" required>
+            </div>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <script src="script/cadastro.js"></script>
+</body>
+</html>
