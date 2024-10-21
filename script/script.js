@@ -1,10 +1,10 @@
 document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evita o envio do formulário
+    event.preventDefault();
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    // Lógica de autenticação básica
+
     let userRole;
     if (username === "caixa" && password === "senha") {
         userRole = "caixa";
@@ -15,10 +15,17 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     }
 
     if (userRole) {
-        alert(`Login bem-sucedido! Você está logado como: ${userRole}`);
-        // Redirecionar para a página correspondente
-        window.location.href = `${userRole}.html`; // Exemplo de redirecionamento
+        Swal.fire({
+            title: "Acesso Autorizado!",
+            text: `Você entrou como ${userRole}`,
+            icon: "success"
+          });
+          setTimeout(function() { window.location.href = `${userRole}.html`; }, 1500);
     } else {
-        document.getElementById("errorMessage").innerText = "Usuário ou senha inválidos.";
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Usuario ou Senha Invalido",
+          });
     }
 });
