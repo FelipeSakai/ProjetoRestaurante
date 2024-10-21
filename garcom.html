@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garçom - Sistema de Restaurante</title>
+    <link rel="stylesheet" href="style/garcom.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Bem-vindo, <span id="usuarioLogado">Garçom</span>!</h1>
+            <button id="sairButton" class="sair-button">Sair</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="mesa-sidebar">
+            <h2>Mesas</h2>
+            <div id="mesaGrid" class="mesa-grid">
+
+            </div>
+        </aside>
+
+        <main class="pedido-main">
+            <h2>Pedidos da Mesa <span id="mesaSelecionada">Selecione uma mesa</span></h2>
+            <div id="pedidoGrid" class="pedido-grid">
+
+            </div>
+
+            <button id="adicionarPedido" class="pedido-button">Adicionar Item</button>
+        </main>
+    </div>
+
+    <script src="script/garcom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>
