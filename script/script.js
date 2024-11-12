@@ -12,6 +12,8 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         userRole = "garcom";
     } else if (username === "cozinha" && password === "senha") {
         userRole = "cozinha";
+    }else if (username === "adm" && password === "senha"){
+        userRole ="adm";
     }
 
     if (userRole) {
