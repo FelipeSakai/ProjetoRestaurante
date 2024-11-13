@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
@@ -9,13 +11,14 @@ body {
 }
 
 header {
-    background-color: #2c3e50;
+    background-color: #2f3538;
     color: white;
     padding: 10px;
     text-align: center;
 }
 
 .header-container {
+    padding: 10px 30px 10px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,13 +30,17 @@ h1 {
 }
 
 .sair-button {
-    background-color: #e74c3c;
-    border: none;
-    padding: 10px 20px;
-    color: white;
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    border-radius: 8px;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 600;
+    margin-left: 40px;
 }
 
 .sair-button:hover {
@@ -46,9 +53,9 @@ h1 {
 }
 
 .mesa-sidebar {
-    background-color: #34495e;
+    background-color: #2f3538;
     color: white;
-    padding: 20px;
+    padding: 20px 20px 0px 15px;
     width: 250px;
     box-sizing: border-box;
 }
@@ -60,8 +67,10 @@ h1 {
 }
 
 .mesa-item {
-    background-color: #2980b9;
+    background-color: #2f3538;
+    border: 2px solid #fff;
     color: white;
+    font-weight: 600;
     padding: 20px;
     text-align: center;
     border-radius: 8px;
