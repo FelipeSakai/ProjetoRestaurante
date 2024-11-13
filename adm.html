@@ -4,19 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistema de Restaurante</title>
+    <title>ADM - Sistema de Restaurante</title>
     <link rel="stylesheet" href="style/adm.css">
 </head>
 
 <body>
     <div class="container">
         <aside class="sidebar">
+            <span class="arrow">&#8594;</span>
             <ul class="role-list">
-                <li>Administrador</li>
-                <li>Caixa</li>
-                <li>Garçom</li>
-                <li>Cozinha</li>
+                <button id= "acessarCaixaButton" class="mudar_button">
+                    <li>Caixa</li>
+                </button class="mudar_button">
+                <button id="acessarGarcomButton" class="mudar_button">
+                    <li>Garçom</li>
+                </button>
+                <button id= "acessarCozinhaButton"class="mudar_button">
+                    <li>Cozinha</li>
+                </button>
             </ul>
+            <button id="sairButton" class="sair-button" onclick="sair()">Sair</button>
         </aside>
 
         <main class="login-form-container">
@@ -37,7 +44,7 @@
                         <option value="cozinha">Cozinha</option>
                     </select>
 
-                    <button type="submit">Entrar</button>
+                    <button type="submit">Cadastrar</button>
                 </form>
             </div>
         </main>

@@ -1,29 +1,41 @@
+<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistema de Restaurante</title>
+    <title>Tela de Login</title>
     <link rel="stylesheet" href="style/style.css">
-    
 </head>
+
 <body>
     <div class="container">
-        <h1>LecoSys</h1>
-        <form id="loginForm">
-            <div class="input-group">
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" required>
+
+        <div class="left-side">
+            <h1>LecoSys</h1>
+        </div>
+
+        <div class="right-side">
+            <div class="login-form">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <label for="username">Nome de Usuário</label>
+                    <input type="text" id="username" placeholder="Digite seu nome de usuário" required>
+
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Digite sua senha" required>
+
+                    <button type="submit">Entrar</button>
+                    <div id="errorMessage" class="error-message"></div>
+                </form>
             </div>
-            <div class="input-group">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit">Entrar</button>
-            <div id="errorMessage" class="error-message"></div>
+        </div>
+
         </form>
     </div>
-
     <script src="script/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
+
 </html>

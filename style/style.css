@@ -1,73 +1,82 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #2f3538;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+* {
     margin: 0;
-    background-image: linear-gradient(to right, rgb(134, 133, 133),rgb(116, 115, 115));
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
 }
 
 .container {
-    background-image: linear-gradient(to right, rgb(115, 177, 228),rgb(44, 127, 223));
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 85%; 
-    max-width: 700px; 
+    display: flex;
+    height: 100vh;
 }
 
-h1 {
+.left-side {
+    width: 50%;
+    background:url('img/imagem.png') no-repeat center center; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-side h1 {
+    font-size: 48px;
+    color:#333; 
     text-align: center;
-    color: #000000;
 }
 
-.input-group {
-    margin-bottom: 15px;
+
+.right-side {
+    width: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-label {
+.login-form {
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.login-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-form label {
     display: block;
-    margin-bottom: 5px;
-    color: #000000;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #333;
 }
 
-input {
+.login-form input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    margin-top: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-button {
+.login-form button {
     width: 100%;
-    padding: 10px;
-    background-color: #2f3538;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
     border: none;
     border-radius: 4px;
-    color: rgb(255, 255, 255);
-    font-size: 16px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #000000;
-}
-
-.error-message {
-    color: red;
-    text-align: center;
-    margin-top: 10px;
-}
-
-
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
+.login-form button:hover {
+    background-color: #555;
 }

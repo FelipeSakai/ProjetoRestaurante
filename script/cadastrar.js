@@ -32,5 +32,5 @@ document.getElementById("produtoForm").addEventListener("submit", function(event
 });
 
 document.getElementById("sairButton").addEventListener("click", function() {
-    window.location.href = "index.html";
+    window.location.href = "caixa.html";
 });

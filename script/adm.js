@@ -9,3 +9,8 @@ document.getElementById("acessarGarcomButton").addEventListener("click", functio
 document.getElementById("acessarCozinhaButton").addEventListener("click", function() {
     window.location.href = "cozinha.html";
 });
+
+function sair() {
+    window.location.href = "index.html";
+}
+;
