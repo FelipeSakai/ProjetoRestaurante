@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 60px; 
+    background-color: #333;
+    color: white;
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 10px; 
+}
+
+.sidebar:hover {
+    width: 200px;
+}
+
+.role-list {
+    list-style: none;
+    padding: 20px;
+    display: none;
+}
+
+.sidebar:hover .role-list {
+    display: block;
+}
+
+.mudar_button {
+    padding: 15px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.mudar_button:hover {
+    background-color: #444;
+    color: #ccc;
+}
+
+.sair-button {
+    padding: 10px;
+    margin-top: auto; 
+    background-color: #444;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sair-button:hover {
+    background-color: #555;
+}
+
+.login-form-container {
+    margin-left: 80px;
+    padding: 100px;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+label {
+    margin-top: 10px;
+    color: #666;
+}
+
+input, select {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.contorno {
+    border: 1px solid black;
+    padding: 40px;
+    border-radius: 3px;
+    width: 100%;
+    overflow: hidden;
+    width: 500px;
+    height: 500px;
+}
