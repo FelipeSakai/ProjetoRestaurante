@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
 * {
@@ -9,8 +10,6 @@
 
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin: 0;
     background-image: url('cozinhaa.jpg');
@@ -39,9 +38,33 @@ body {
     padding: 40px;
 }
 
-h1 {
+.left-side {
+    width: 50%;
+    background:url('img/imagem.png') no-repeat center center; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-side h1 {
+    font-size: 48px;
+    color:#333; 
     text-align: center;
-    color: #000000;
+}
+
+
+.right-side {
+    width: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
 }
 
 .input-box{
@@ -110,36 +133,20 @@ h1 {
 
 .remember-forgot a:hover {
     text-decoration: underline;
-}
 
-button {
+
+.login-form button {
     width: 100%;
-    padding: 10px;
-    background-color: #2f3538;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
     border: none;
     border-radius: 4px;
-    color: rgb(255, 255, 255);
-    font-size: 16px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #000000;
-}
-
-.error-message {
-    color: red;
-    text-align: center;
-    margin-top: 10px;
-}
-
-
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
+.login-form button:hover {
+    background-color: #555;
 }
