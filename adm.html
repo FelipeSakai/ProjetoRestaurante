@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,19 +7,18 @@
     <link rel="stylesheet" href="style/adm.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
     <div class="container">
         <aside class="sidebar">
             <span class="arrow">&#8594;</span>
             <ul class="role-list">
-                <button id= "acessarCaixaButton" class="mudar_button">
+                <button id="acessarCaixaButton" class="mudar_button">
                     <li>Caixa</li>
-                </button class="mudar_button">
+                </button>
                 <button id="acessarGarcomButton" class="mudar_button">
                     <li>Garçom</li>
                 </button>
-                <button id= "acessarCozinhaButton"class="mudar_button">
+                <button id="acessarCozinhaButton" class="mudar_button">
                     <li>Cozinha</li>
                 </button>
             </ul>
@@ -29,29 +27,49 @@
 
         <main class="login-form-container">
             <div class="contorno">
-                <h1>Cadastro</h1>
-                <form id="loginForm">
-                    <label for="login">Usuário</label>
-                    <input type="text" id="login" name="login" required placeholder="Digite o nome">
+                <h1>Administração</h1>
+                
+                <div id="mainOptions">
+                    <button id="cadastrarUsuarioButton" class="action-button">Cadastrar Usuário</button>
+                    <button id="listarUsuariosButton" class="action-button">Ver Usuários Cadastrados</button>
+                </div>
 
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" required placeholder="Digite a senha">
+                <div id="cadastroUsuario" class="cadastro-form" style="display:none;">
+                    <h2>Cadastro de Usuário</h2>
+                    <form id="loginForm">
+                        <label for="login">Usuário</label>
+                        <input type="text" id="login" name="login" required placeholder="Digite o nome">
 
-                    <label for="tipo">Tipo de Usuário</label>
-                    <select id="tipo" name="tipo" required>
-                        <option value="administrador">Administrador</option>
-                        <option value="caixa">Caixa</option>
-                        <option value="garcom">Garçom</option>
-                        <option value="cozinha">Cozinha</option>
-                    </select>
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" name="senha" required placeholder="Digite a senha">
 
-                    <button type="submit">Cadastrar</button>
-                </form>
+                        <label for="tipo">Tipo de Usuário</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="A">Administrador</option>
+                            <option value="C">Caixa</option>
+                            <option value="O">Cozinha</option>
+                            <option value="G">Garçom</option>
+                        </select>
+
+                        <button type="submit">Cadastrar</button>
+                    </form>
+                    <button class="voltar-button" onclick="window.location.href = 'adm.html'">Voltar para ADM</button>
+
+                </div>
+
+                <div id="usuariosCadastrados" class="usuarios-list" style="display:none;">
+                    <h2>Usuários Cadastrados</h2>
+                    <ul id="usuariosList"></ul>
+
+                <br>
+                <button class="voltar-button" onclick="window.location.href = 'adm.html'">Voltar para ADM</button>
+
+                </div>
+                
             </div>
         </main>
     </div>
 
     <script src="script/adm.js"></script>
 </body>
-
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Usuário/Produto - Sistema de Restaurante</title>
+    <title>Cadastrar Produto - Sistema de Restaurante</title>
     <link rel="stylesheet" href="style/cadastrar.css">
 </head>
 <body>
@@ -13,11 +13,9 @@
         </header>
 
         <main class="content">
-            <section class="cadastro-opcoes">
+        
 
-                <button id="cadastrarProdutoButton" class="cadastro-button">Cadastrar Produto</button>
-            </section>
-            <section id="cadastroProduto" class="cadastro-form" style="display:none;">
+            <section id="cadastroProduto" class="cadastro-form" style="display:block;">
                 <h2>Cadastrar Produto</h2>
                 <form id="produtoForm">
                     <label for="secaoProduto"></label>
@@ -27,7 +25,7 @@
                     <input type="text" id="nomeProduto" name="nomeProduto" placeholder="Nome do Produto" required>
 
                     <label for="precoProduto"></label>
-                    <input type="number" id="precoProduto" name="precoProduto" step="0.01" placeholder="Preço do Produtos" required>
+                    <input type="number" id="precoProduto" name="precoProduto" step="0.01" placeholder="Preço do Produto" required>
 
                     <button type="submit" class="submit-button">Cadastrar Produto</button>
                 </form>
@@ -36,5 +34,6 @@
     </div>
 
     <script src="script/cadastrar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

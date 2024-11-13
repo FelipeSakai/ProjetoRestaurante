@@ -1,23 +1,3 @@
-document.getElementById("cadastrarUsuarioButton").addEventListener("click", function() {
-    document.getElementById("cadastroUsuario").style.display = "block";
-    document.getElementById("cadastroProduto").style.display = "none";
-});
-
-document.getElementById("cadastrarProdutoButton").addEventListener("click", function() {
-    document.getElementById("cadastroProduto").style.display = "block";
-    document.getElementById("cadastroUsuario").style.display = "none";
-});
-
-document.getElementById("usuarioForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    const nomeUsuario = document.getElementById("nomeUsuario").value;
-    const emailUsuario = document.getElementById("senhaUsuario").value;
-    
-    alert(`Usuário ${nomeUsuario} cadastrado com sucesso!`);
-    
-    document.getElementById("usuarioForm").reset();
-});
 
 document.getElementById("produtoForm").addEventListener("submit", function(event) {
     event.preventDefault();
@@ -26,11 +6,28 @@ document.getElementById("produtoForm").addEventListener("submit", function(event
     const nomeProduto = document.getElementById("nomeProduto").value;
     const precoProduto = document.getElementById("precoProduto").value;
 
-    alert(`Produto ${nomeProduto} na seção ${secaoProduto} cadastrado com sucesso!`);
-    
-    document.getElementById("produtoForm").reset();
+    if (secaoProduto && nomeProduto && precoProduto) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Produto Cadastrado',
+            text: `Produto ${nomeProduto} na seção ${secaoProduto} cadastrado com sucesso!`,
+            confirmButtonText: 'Fechar',
+            timer: 1500 
+        });
+
+        document.getElementById("produtoForm").reset();
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: 'Por favor, preencha todos os campos.',
+            confirmButtonText: 'Fechar'
+        });
+    }
 });
 
+
 document.getElementById("sairButton").addEventListener("click", function() {
-    window.location.href = "caixa.html";
+    console.log("Botão sair clicado!");
+    window.location.href = "caixa.html"; 
 });

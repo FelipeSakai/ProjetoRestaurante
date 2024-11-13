@@ -1,12 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-image: linear-gradient(to right, rgb(134, 133, 133), rgb(116, 115, 115));
     margin: 0;
     padding: 20px;
 }
 
 .container {
-    background-color: rgb(115, 177, 228);
+    background-color: #162938;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -16,7 +19,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(44, 127, 223);
+    background-color: #162938;
     padding: 10px 20px;
     border-radius: 8px;
     color: white;
@@ -28,13 +31,17 @@ h1 {
 }
 
 .sair-button {
-    background-color: #e74c3c;
-    border: none;
-    padding: 10px 20px;
-    color: white;
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    border-radius: 8px;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 600;
+    margin-left: 40px;
 }
 
 .sair-button:hover {
@@ -47,7 +54,7 @@ main {
 
 h2 {
     text-align: center;
-    color: #333;
+    color: #fff;
 }
 
 .pedidos-container {
@@ -73,4 +80,3 @@ h2 {
     padding: 10px;
     border-radius: 4px;
 }
-

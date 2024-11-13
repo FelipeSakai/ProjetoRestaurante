@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function() {
     const pedidos = [
         { mesa: 3, itens: ['Lanche', 'Refrigerante'] },
