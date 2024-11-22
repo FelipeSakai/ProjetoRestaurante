@@ -1,22 +1,20 @@
-// Mostrar ou esconder a tela de cadastro de usuário
 document.getElementById("cadastrarUsuarioButton").addEventListener("click", function() {
     document.getElementById("mainOptions").style.display = "none";
     document.getElementById("cadastroUsuario").style.display = "block";
     document.getElementById("usuariosCadastrados").style.display = "none";
 });
 
-// Mostrar a lista de usuários cadastrados
+
 document.getElementById("listarUsuariosButton").addEventListener("click", function() {
     document.getElementById("mainOptions").style.display = "none";
     document.getElementById("cadastroUsuario").style.display = "none";
     document.getElementById("usuariosCadastrados").style.display = "block";
     
-    // Fazer a requisição GET para buscar os usuários cadastrados
-    fetch('http://localhost:3333/users')  // Ajuste o URL conforme seu backend
+    fetch('http://localhost:3333/users') 
         .then(response => response.json())
         .then(data => {
             const usuariosList = document.getElementById("usuariosList");
-            usuariosList.innerHTML = '';  // Limpar a lista antes de preencher
+            usuariosList.innerHTML = ''; 
             data.forEach(usuario => {
                 const li = document.createElement("li");
                 li.textContent = `Nome: ${usuario.login} - Tipo: ${usuario.tipo}`;
@@ -33,7 +31,7 @@ document.getElementById("listarUsuariosButton").addEventListener("click", functi
         });
 });
 
-// Lidar com o cadastro de usuário
+
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -41,8 +39,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const senhaUsuario = document.getElementById('senha').value;
     const tipoUsuario = document.getElementById('tipo').value;
 
-    // Enviar os dados do formulário para o backend
-    fetch('http://localhost:3333/user', {  // Ajuste o URL conforme seu backend
+    fetch('http://localhost:3333/user', { 
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -61,8 +58,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             showConfirmButton: false,
             timer: 1500
         });
-
-        // Resetando o formulário e mostrando novamente os botões
         document.getElementById('loginForm').reset();
         document.getElementById("cadastroUsuario").style.display = "none";
         document.getElementById("mainOptions").style.display = "block";
@@ -77,7 +72,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     });
 });
 
-// Função de sair
 function sair() {
     window.location.href = "index.html";
 }
