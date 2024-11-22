@@ -1,9 +1,13 @@
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); 
+    e.preventDefault();
 
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    if (!username || !password) {
+        showError("Preencha todos os campos antes de continuar.");
+        return;
+    }
 
     try {
         const response = await fetch("http://localhost:3333/user/login", {
@@ -11,15 +15,15 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ username, password }) 
+            body: JSON.stringify({ username, password })
         });
 
         const data = await response.json();
+        console.log(data);
 
         if (response.ok) {
-            const userType = data.userType; 
+            const userType = data.userType;
 
-            
             switch (userType) {
                 case "A":
                     window.location.href = "adm.html";
@@ -31,7 +35,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                     window.location.href = "cozinha.html";
                     break;
                 case "G":
-                    window.location.href = "garcom.hmtl";
+                    window.location.href = "garcom.html"; 
                     break;
                 default:
                     throw new Error("Tipo de usuário inválido");

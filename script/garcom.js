@@ -1,38 +1,55 @@
-const mesas = [
-    { nome: "Mesa 1", pedidos: [], total: 0 },
-    { nome: "Mesa 2", pedidos: [], total: 0 },
-    { nome: "Mesa 3", pedidos: [], total: 0 }
-];
-
-
-const cardapio = [
-    { nome: "Lanche", preco: 25.00, imagem: "https://via.placeholder.com/100" },
-    { nome: "Refrigerante", preco: 5.00, imagem: "https://via.placeholder.com/100" }
-];
+const API_MESAS_URL = "http://localhost:3333/mesas";
+const API_CARDAPIO_URL = "http://localhost:3333/cardapio";
 
 const mesaGridElement = document.getElementById("mesaGrid");
 const pedidoGridElement = document.getElementById("pedidoGrid");
 const mesaSelecionadaElement = document.getElementById("mesaSelecionada");
 let mesaAtual = null;
+let cardapio = [];
+
+async function carregarMesas() {
+    try {
+        const response = await fetch(API_MESAS_URL);
+        const mesas = await response.json();
+
+        mesas.forEach((mesa, index) => {
+            const mesaDiv = document.createElement("div");
+            mesaDiv.classList.add("mesa-item");
+            mesaDiv.textContent = mesa.nome;
+            mesaDiv.addEventListener("click", () => selecionarMesa(mesa, index));
+            mesaGridElement.appendChild(mesaDiv);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar mesas:", error);
+        Swal.fire("Erro ao carregar mesas!");
+    }
+}
+
+async function carregarCardapio() {
+    try {
+        const response = await fetch(API_CARDAPIO_URL);
+        cardapio = await response.json();
+    } catch (error) {
+        console.error("Erro ao carregar cardápio:", error);
+        Swal.fire("Erro ao carregar cardápio!");
+    }
+}
 
 
-mesas.forEach((mesa, index) => {
-    const mesaDiv = document.createElement("div");
-    mesaDiv.classList.add("mesa-item");
-    mesaDiv.textContent = mesa.nome;
-    mesaDiv.addEventListener("click", () => selecionarMesa(index));
-    mesaGridElement.appendChild(mesaDiv);
-});
-
-function selecionarMesa(index) {
-    mesaAtual = mesas[index];
+function selecionarMesa(mesa, index) {
+    mesaAtual = mesa;
     mesaSelecionadaElement.textContent = mesaAtual.nome;
     atualizarPedidos();
 }
 
-
 function atualizarPedidos() {
-    pedidoGridElement.innerHTML = ""; 
+    pedidoGridElement.innerHTML = "";
+
+    if (mesaAtual.pedidos.length === 0) {
+        pedidoGridElement.textContent = "Nenhum pedido registrado.";
+        return;
+    }
+
     mesaAtual.pedidos.forEach(pedido => {
         const pedidoDiv = document.createElement("div");
         pedidoDiv.classList.add("pedido-item");
@@ -54,14 +71,13 @@ function atualizarPedidos() {
     });
 }
 
-
 document.getElementById("adicionarPedido").addEventListener("click", async function () {
     if (!mesaAtual) {
         Swal.fire("Selecione uma mesa primeiro!");
         return;
     }
 
-    const { value: itemNome } = await Swal.fire({
+    const { value: itemIndex } = await Swal.fire({
         title: "Escolha o item",
         input: "select",
         inputOptions: cardapio.reduce((obj, item, index) => {
@@ -72,15 +88,32 @@ document.getElementById("adicionarPedido").addEventListener("click", async funct
         showCancelButton: true
     });
 
-    if (itemNome !== undefined) {
-        const itemSelecionado = cardapio[itemNome];
+    if (itemIndex !== undefined) {
+        const itemSelecionado = cardapio[itemIndex];
         mesaAtual.pedidos.push(itemSelecionado);
-        mesaAtual.total += itemSelecionado.preco;
-        atualizarPedidos();
-        Swal.fire(`Item "${itemSelecionado.nome}" adicionado com sucesso!`);
+
+        try {
+            await fetch(`${API_MESAS_URL}/${mesaAtual.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(mesaAtual),
+            });
+
+            atualizarPedidos();
+            Swal.fire(`Item "${itemSelecionado.nome}" adicionado com sucesso!`);
+        } catch (error) {
+            console.error("Erro ao atualizar pedidos:", error);
+            Swal.fire("Erro ao adicionar pedido!");
+        }
     }
 });
 
+(async function inicializar() {
+    await carregarCardapio();
+    await carregarMesas();
+})();
+
+
 document.getElementById("sairButton").addEventListener("click", function () {
-    window.location.href = "index.html"; 
+    window.location.href = "index.html";
 });

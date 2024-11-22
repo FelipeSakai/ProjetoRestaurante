@@ -1,31 +1,55 @@
-
-document.addEventListener("DOMContentLoaded", function() {
-    const pedidos = [
-        { mesa: 3, itens: ['Lanche', 'Refrigerante'] },
-        { mesa: 5, itens: ['Pizza', 'Suco']},
-        { mesa: 1, itens: ['Sopa', 'Água']}
-    ];
+document.addEventListener("DOMContentLoaded", function () {
 
     const pedidosList = document.getElementById("pedidosList");
 
-    pedidos.forEach(pedido => {
-        const divPedido = document.createElement("div");
-        divPedido.classList.add("pedido-item");
+    function atualizarPedidos() {
+        pedidosList.innerHTML = "";
 
-        const tituloPedido = document.createElement("h3");
-        tituloPedido.textContent = `Mesa ${pedido.mesa}`;
+        mesas.forEach((mesa, index) => {
+            if (mesa.pedidos.length > 0) {
+                const divPedido = document.createElement("div");
+                divPedido.classList.add("pedido-item");
 
-        const infoPedido = document.createElement("div");
-        infoPedido.classList.add("pedido-info");
-        infoPedido.textContent = `Itens: ${pedido.itens.join(', ')}`;
+                const tituloPedido = document.createElement("h3");
+                tituloPedido.textContent = mesa.nome;
 
-        divPedido.appendChild(tituloPedido);
-        divPedido.appendChild(infoPedido);
+                const infoPedido = document.createElement("div");
+                infoPedido.classList.add("pedido-info");
+                infoPedido.textContent = `Itens: ${mesa.pedidos.join(", ")}`;
 
-        pedidosList.appendChild(divPedido);
-    });
+                const botaoLimpar = document.createElement("button");
+                botaoLimpar.textContent = "Limpar";
+                botaoLimpar.classList.add("limpar-button");
+                botaoLimpar.addEventListener("click", () => limparPedidos(index));
 
-    document.getElementById("sairButton").addEventListener("click", function() {
+                divPedido.appendChild(tituloPedido);
+                divPedido.appendChild(infoPedido);
+                divPedido.appendChild(botaoLimpar);
+
+                pedidosList.appendChild(divPedido);
+            }
+        });
+    }
+
+    function limparPedidos(index) {
+        Swal.fire({
+            title: "Deseja limpar os pedidos desta mesa?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                mesas[index].pedidos = []; 
+                atualizarPedidos();
+                Swal.fire("Pedidos limpos com sucesso!");
+            }
+        });
+    }
+
+    document.getElementById("sairButton").addEventListener("click", function () {
         window.location.href = "index.html";
     });
+
+    atualizarPedidos();
 });

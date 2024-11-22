@@ -6,6 +6,25 @@ document.getElementById("cadastrarUsuarioProduto").addEventListener("click", fun
     window.location.href = "cadastrar.html"; 
 });
 
+async function listarMesas() {
+    try {
+        const response = await fetch("/mesa/list");
+        if (!response.ok) {
+            throw new Error("Erro ao listar mesas.");
+        }
+        const mesas = await response.json();
+        const mesaList = document.getElementById("mesaList");
+        mesaList.innerHTML = "";
+
+        mesas.forEach(mesa => {
+            criarElementoMesa(mesa.id, mesa.nome);
+        });
+    } catch (error) {
+        console.error("Erro ao listar mesas:", error);
+        Swal.fire("Erro", "Não foi possível carregar as mesas.", "error");
+    }
+}
+
 document.getElementById("cadastrarMesa").addEventListener("click", async function () {
     const { value: mesaNome } = await Swal.fire({
         title: "Cadastre a mesa",
@@ -20,46 +39,75 @@ document.getElementById("cadastrarMesa").addEventListener("click", async functio
     });
 
     if (mesaNome) {
-        Swal.fire(`Você Cadastrou a Mesa ${mesaNome}`);
-
-        const divMesa = document.createElement("div");
-        divMesa.classList.add("mesa-item");
-
-        const mesaTitulo = document.createElement("h3");
-        mesaTitulo.textContent = `Mesa ${mesaNome}`;
-
-        const mesaInfo = document.createElement("div");
-        mesaInfo.classList.add("mesa-info");
-        mesaInfo.textContent = `Informações da Mesa ${mesaNome}`;
-        mesaInfo.style.display = "none";
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Excluir Mesa";
-        deleteButton.classList.add("delete-button");
-        deleteButton.addEventListener("click", async function (event) {
-            event.stopPropagation();
-            const { isConfirmed } = await Swal.fire({
-                title: `Tem certeza que deseja excluir a Mesa ${mesaNome}?`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sim, excluir!",
-                cancelButtonText: "Cancelar",
+        try {
+            const response = await fetch("/mesa/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nome: mesaNome })
             });
-            if (isConfirmed) {
-                divMesa.remove();
-                Swal.fire("Excluída!", `Mesa ${mesaNome} foi excluída.`, "success");
+            if (!response.ok) {
+                throw new Error("Erro ao criar a mesa.");
             }
-        });
-
-        divMesa.appendChild(mesaTitulo);
-        divMesa.appendChild(mesaInfo);
-        divMesa.appendChild(deleteButton);
-
-
-        divMesa.addEventListener("click", function () {
-            mesaInfo.style.display = mesaInfo.style.display === "none" ? "block" : "none";
-        });
-
-        document.getElementById("mesaList").appendChild(divMesa);
+            const mesa = await response.json();
+            criarElementoMesa(mesa.id, mesa.nome);
+            Swal.fire(`Você Cadastrou a Mesa ${mesa.nome}`);
+        } catch (error) {
+            console.error("Erro ao criar mesa:", error);
+            Swal.fire("Erro", "Não foi possível criar a mesa.", "error");
+        }
     }
 });
+
+function criarElementoMesa(id, nome) {
+    const divMesa = document.createElement("div");
+    divMesa.classList.add("mesa-item");
+
+    const mesaTitulo = document.createElement("h3");
+    mesaTitulo.textContent = `Mesa ${nome}`;
+
+    const mesaInfo = document.createElement("div");
+    mesaInfo.classList.add("mesa-info");
+    mesaInfo.textContent = `Informações da Mesa ${nome}`;
+    mesaInfo.style.display = "none";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Excluir Mesa";
+    deleteButton.classList.add("delete-button");
+    deleteButton.addEventListener("click", async function (event) {
+        event.stopPropagation();
+        const { isConfirmed } = await Swal.fire({
+            title: `Tem certeza que deseja excluir a Mesa ${nome}?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Cancelar",
+        });
+        if (isConfirmed) {
+            try {
+                const response = await fetch(`/mesa/delete/${id}`, {
+                    method: "DELETE"
+                });
+                if (!response.ok) {
+                    throw new Error("Erro ao excluir a mesa.");
+                }
+                divMesa.remove();
+                Swal.fire("Excluída!", `Mesa ${nome} foi excluída.`, "success");
+            } catch (error) {
+                console.error("Erro ao excluir mesa:", error);
+                Swal.fire("Erro", "Não foi possível excluir a mesa.", "error");
+            }
+        }
+    });
+
+    divMesa.appendChild(mesaTitulo);
+    divMesa.appendChild(mesaInfo);
+    divMesa.appendChild(deleteButton);
+
+    divMesa.addEventListener("click", function () {
+        mesaInfo.style.display = mesaInfo.style.display === "none" ? "block" : "none";
+    });
+
+    document.getElementById("mesaList").appendChild(divMesa);
+}
+
+document.addEventListener("DOMContentLoaded", listarMesas);
