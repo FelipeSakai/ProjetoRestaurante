@@ -207,3 +207,60 @@ input {
 .submit-button:hover {
     background-color: #000000;
 }
+
+.content {
+    padding: 20px;
+}
+
+.listas-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.lista-produtos-section,
+.lista-categorias-section {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.lista-produtos-section h2,
+.lista-categorias-section h2 {
+    margin-bottom: 15px;
+}
+
+.lista-produtos,
+.lista-categorias {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.produto-item,
+.categoria-item {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.produto-item button,
+.categoria-item button {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.produto-item button:hover,
+.categoria-item button:hover {
+    background-color: #a0291b;
+}
