@@ -75,3 +75,12 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 function sair() {
     window.location.href = "index.html";
 }
+function sairCaixa() {
+    window.location.href = "caixa.html";
+}
+function sairGarcom() {
+    window.location.href = "garcom.html";
+}
+function sairCozinha() {
+    window.location.href = "cozinha.html";
+}

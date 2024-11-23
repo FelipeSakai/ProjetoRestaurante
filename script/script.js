@@ -1,10 +1,10 @@
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const login = document.getElementById("username").value.trim();
+    const senha = document.getElementById("password").value.trim();
 
-    if (!username || !password) {
+    if (!login || !senha) {
         showError("Preencha todos os campos antes de continuar.");
         return;
     }
@@ -15,14 +15,14 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ login, senha })
         });
 
         const data = await response.json();
         console.log(data);
 
         if (response.ok) {
-            const userType = data.userType;
+            const userType = data.user.tipo;
 
             switch (userType) {
                 case "A":
