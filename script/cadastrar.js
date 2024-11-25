@@ -6,13 +6,15 @@ async function carregarCategorias() {
         if (!response.ok) throw new Error("Erro ao buscar categorias");
 
         const categorias = await response.json();
+        console.log("Categorias carregadas:", categorias);
+
         const secaoProduto = document.getElementById("secaoProduto");
 
         secaoProduto.innerHTML = '<option value="" disabled selected>Selecione uma Categoria</option>';
         categorias.forEach(categoria => {
             const option = document.createElement("option");
-            option.value = categoria.id;
-            option.textContent = categoria.nome;
+            option.value = categoria.id_categoria_produto;
+            option.textContent = categoria.categoria;
             secaoProduto.appendChild(option);
         });
     } catch (error) {
@@ -24,6 +26,7 @@ async function carregarCategorias() {
         });
     }
 }
+
 
 document.getElementById("categoriaForm").addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -145,40 +148,125 @@ document.getElementById("produtoForm").addEventListener("submit", async function
 
 async function listarProdutos() {
     try {
-        const response = await fetch(`${BASE_URL}/product/list`);
-        const produtos = await response.json();
+        const responseProdutos = await fetch(`${BASE_URL}/product/list`);
+        const produtos = await responseProdutos.json();
 
-        if (response.ok) {
-            const listaProdutos = document.getElementById("listaProdutos");
-            listaProdutos.innerHTML = "";
-
-            produtos.forEach((produto) => {
-                const produtoItem = document.createElement("div");
-                produtoItem.classList.add("produto-item");
-                produtoItem.innerHTML = `
-                    <p><strong>Nome:</strong> ${produto.nome_produto}</p>
-                    <p><strong>Categoria:</strong> ${produto.id_categoria_produto}</p>
-                    <p><strong>Preço:</strong> R$ ${produto.preco.toFixed(2)}</p>
-                    <button class="editButton" data-id="${produto.id}">Editar</button>
-                    <button class="deleteButton" data-id="${produto.id}">Excluir</button>
-                `;
-                listaProdutos.appendChild(produtoItem);
-            });
-
-            document.querySelectorAll(".editButton").forEach((button) =>
-                button.addEventListener("click", () => editarProduto(button.dataset.id))
-            );
-            document.querySelectorAll(".deleteButton").forEach((button) =>
-                button.addEventListener("click", () => deletarProduto(button.dataset.id))
-            );
-        } else {
-            console.error("Erro ao listar produtos:", produtos.message);
+        if (!responseProdutos.ok) {
+            throw new Error("Erro ao listar produtos");
         }
+
+        const responseCategorias = await fetch(`${BASE_URL}/category/list`);
+        const categorias = await responseCategorias.json();
+
+        if (!responseCategorias.ok) {
+            throw new Error("Erro ao listar categorias");
+        }
+
+        const categoriaMap = categorias.reduce((map, categoria) => {
+            map[categoria.id_categoria_produto] = categoria.categoria;
+            return map;
+        }, {});
+
+        const listaProdutos = document.getElementById("listaProdutos");
+        listaProdutos.innerHTML = "";
+
+        produtos.forEach((produto) => {
+            const categoriaNome = categoriaMap[produto.id_categoria_produto] || "Categoria desconhecida";
+
+            const produtoItem = document.createElement("div");
+            produtoItem.classList.add("produto-item");
+            produtoItem.innerHTML = `
+                <p><strong>Nome:</strong> ${produto.nome_produto}</p>
+                <p><strong>Categoria:</strong> ${categoriaNome}</p>
+                <p><strong>Preço:</strong> R$ ${produto.preco.toFixed(2)}</p>
+                <button class="editButton" data-id="${produto.id_produto}">Editar</button>
+                <button class="deleteButton" data-id="${produto.id_produto}">Excluir</button>
+            `;
+            listaProdutos.appendChild(produtoItem);
+        });
+
+        document.querySelectorAll(".deleteButton").forEach((button) =>
+            button.addEventListener("click", (event) => {
+                const idProduto = event.target.getAttribute("data-id");
+                deletarProduto(idProduto);
+            })
+        );
     } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
+        console.error(error.message);
     }
 }
 
+
+async function listarCategorias() {
+    try {
+        const response = await fetch(`${BASE_URL}/category/list`);
+        const categorias = await response.json();
+
+        if (!response.ok) {
+            throw new Error("Erro ao listar categorias");
+        }
+
+        const listaCategorias = document.getElementById("listaCategorias");
+        listaCategorias.innerHTML = "";
+
+        categorias.forEach((categoria) => {
+            const categoriaItem = document.createElement("div");
+            categoriaItem.classList.add("categoria-item");
+            categoriaItem.innerHTML = `
+                <p><strong>Nome da Categoria:</strong> ${categoria.categoria}</p>
+                <button class="editButton" data-id="${categoria.id_categoria_produto}">Editar</button>
+                <button class="deleteButton" data-id="${categoria.id_categoria_produto}">Excluir</button>
+            `;
+            listaCategorias.appendChild(categoriaItem);
+        });
+
+        document.querySelectorAll(".editButton").forEach((button) =>
+            button.addEventListener("click", () => editarCategoria(button.dataset.id))
+        );
+        document.querySelectorAll(".deleteButton").forEach((button) =>
+            button.addEventListener("click", () => deletarCategoria(button.dataset.id))
+        );
+    } catch (error) {
+        console.error("Erro ao listar categorias:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Não foi possível listar as categorias.",
+        });
+    }
+}
+
+
+async function deletarProduto(id) {
+    try {
+        const response = await fetch(`${BASE_URL}/product/delete/${id}`, {
+            method: "DELETE",
+        });
+
+        if (response.ok) {
+            Swal.fire({
+                icon: "success",
+                title: "Produto Deletado",
+                text: "Produto excluído com sucesso!",
+                timer: 1500,
+            });
+            listarProdutos();
+        } else {
+            const data = await response.json();
+            Swal.fire({
+                icon: "error",
+                title: "Erro",
+                text: data.message || "Não foi possível excluir o produto.",
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao excluir produto:", error);
+    }
+}
+
+function sair() {
+    window.location.href = "caixa.html";
+}
 
 carregarCategorias();
 listarProdutos();

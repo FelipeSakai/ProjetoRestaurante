@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADM - Sistema de Restaurante</title>
     <link rel="stylesheet" href="style/adm.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 </head>
+
 <body>
     <div class="container">
         <aside class="sidebar">
             <span class="arrow">&#8594;</span>
             <ul class="role-list">
                 <button id="acessarCaixaButton" onclick="sairCaixa()" class="mudar_button">
-                    <li>Caixa</li>
+                    <li><i class="bi bi-currency-dollar"></i></li>
                 </button>
                 <button id="acessarGarcomButton" onclick="sairGarcom()" class="mudar_button">
-                    <li>Garçom</li>
+                    <li><i class="bi bi-person-square"></i></li>
                 </button>
                 <button id="acessarCozinhaButton" onclick="sairCozinha()" class="mudar_button">
-                    <li>Cozinha</li>
+                    <li><i class="bi bi-cup-hot"></i></li>
                 </button>
             </ul>
             <button id="sairButton" class="sair-button" onclick="sair()">Sair</button>
@@ -28,13 +32,14 @@
         <main class="login-form-container">
             <div class="contorno">
                 <h1>Administração</h1>
-                
+
                 <div id="mainOptions">
                     <button id="cadastrarUsuarioButton" class="action-button">Cadastrar Usuário</button>
                     <button id="listarUsuariosButton" class="action-button">Ver Usuários Cadastrados</button>
+                    <button id="cadastrarGarcomButton" class="action-button">Cadastrar Garçom</button>
                 </div>
 
-                <div id="cadastroUsuario" class="cadastro-form" style="display:none;">
+                <div id="cadastroUsuario" class="cadastro-form" style="display:one;">
                     <h2>Cadastro de Usuário</h2>
                     <form id="loginForm">
                         <label for="login">Usuário</label>
@@ -53,23 +58,40 @@
 
                         <button type="submit">Cadastrar</button>
                     </form>
-                    <button class="voltar-button" onclick="window.location.href = 'adm.html'">Voltar para ADM</button>
+                    <button class="voltar-button">Voltar para ADM</button>
+                </div>
 
+                <div id="cadastroGarcom" class="cadastro-form" style="display:none;">
+                    <h2>Cadastro de Garçom</h2>
+                    <form id="garcomForm">
+                        <label for="nomeGarcom">Nome</label>
+                        <input type="text" id="nomeGarcom" name="nome" required placeholder="Digite o nome do garçom">
+
+                        <label for="telefoneGarcom">Telefone</label>
+                        <input type="text" id="telefoneGarcom" name="telefone" required placeholder="Digite o telefone">
+
+                        <label for="idUser">Usuário</label>
+                        <select id="idUser" name="id_user" required>
+                            <option value="">Selecione um usuário</option>
+                        </select>
+
+
+                        <button type="submit">Cadastrar</button>
+                    </form>
+                    <button class="voltar-button">Voltar para ADM</button>
                 </div>
 
                 <div id="usuariosCadastrados" class="usuarios-list" style="display:none;">
                     <h2>Usuários Cadastrados</h2>
                     <ul id="usuariosList"></ul>
-
-                <br>
-                <button class="voltar-button" onclick="window.location.href = 'adm.html'">Voltar para ADM</button>
-
+                    <button class="voltar-button">Voltar para ADM</button>
                 </div>
-                
+
             </div>
         </main>
     </div>
 
     <script src="script/adm.js"></script>
 </body>
+
 </html>

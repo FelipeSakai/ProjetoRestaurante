@@ -4,34 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garçom - Sistema de Restaurante</title>
+    <title>Comandas - Sistema de Restaurante</title>
     <link rel="stylesheet" href="style/garcom.css">
 </head>
 
 <body>
     <header>
         <div class="header-container">
-            <h1>Bem-vindo, <span id="usuarioLogado">Garçom</span>!</h1>
-            <button id="sairButton" class="sair-button">Sair</button>
+            <h1>Comandas</h1>
         </div>
     </header>
 
     <div class="container">
-        <aside class="mesa-sidebar">
-            <h2>Mesas</h2>
-            <div id="mesaGrid" class="mesa-grid">
-
-            </div>
+        <aside class="comanda-sidebar">
+            <h2>Comandas Criadas</h2>
+            <button id="cadastrarComanda" class="cadastrar-button">Cadastrar Comanda</button>
+            <div id="comandaGrid" class="comanda-grid"></div>
         </aside>
 
-        <main class="pedido-main">
-            <h2>Pedidos da Mesa <span id="mesaSelecionada">Selecione uma mesa</span></h2>
-            <div id="pedidoGrid" class="pedido-grid">
-
-            </div>
-
-            <button id="adicionarPedido" class="pedido-button">Adicionar Item</button>
+        <main class="produto-main">
+            <h2>Produtos da Comanda</h2>
+            <div id="produtoGrid" class="produto-grid"></div>
+            <button id="finalizarComanda" class="finalizar-button" style="display: none;">
+                Finalizar Comanda
+            </button>
         </main>
+        <button id="adicionarProdutoButton" style="display: none;">Adicionar Produto</button>
+
     </div>
 
     <script src="script/garcom.js"></script>

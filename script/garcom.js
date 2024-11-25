@@ -1,123 +1,145 @@
-const API_MESAS_URL = "http://localhost:3333/mesa";
-const API_CARDAPIO_URL = "http://localhost:3333/product";
-let mesaAtual = null;
-let cardapio = [];
+document.addEventListener("DOMContentLoaded", listarComandas);
 
-const mesaGridElement = document.getElementById("mesaGrid");
-const pedidoGridElement = document.getElementById("pedidoGrid");
-const mesaSelecionadaElement = document.getElementById("mesaSelecionada");
+let comandaSelecionada = null;
 
-async function carregarMesas() {
+async function listarComandas() {
     try {
-        const response = await fetch(`${API_MESAS_URL}/list`);
-        if (!response.ok) throw new Error("Erro ao carregar mesas.");
+        const response = await fetch("http://localhost:3333/pedido/list");
+        if (!response.ok) throw new Error("Erro ao listar comandas.");
 
-        const mesas = await response.json();
-        mesaGridElement.innerHTML = ""; 
+        const comandas = await response.json();
+        const comandaGrid = document.getElementById("comandaGrid");
+        comandaGrid.innerHTML = "";
 
-        mesas.forEach((mesa) => {
-            const mesaDiv = document.createElement("div");
-            mesaDiv.classList.add("mesa-item");
-            mesaDiv.textContent = `Mesa ${mesa.numero_mesa}`;
-            mesaDiv.addEventListener("click", () => selecionarMesa(mesa));
-            mesaGridElement.appendChild(mesaDiv);
+        comandas.forEach((comanda) => {
+            const comandaDiv = document.createElement("div");
+            comandaDiv.classList.add("comanda-item");
+            comandaDiv.textContent = `Mesa #${comanda.mesa.numero_mesa}`;
+            comandaDiv.dataset.id = comanda.id_pedido;
+
+            comandaDiv.addEventListener("click", () => abrirProdutosDaComanda(comanda.id_pedido));
+            comandaGrid.appendChild(comandaDiv);
         });
     } catch (error) {
-        console.error("Erro ao carregar mesas:", error);
-        Swal.fire("Erro", "Não foi possível carregar as mesas.", "error");
+        console.error("Erro ao listar comandas:", error);
+        Swal.fire("Erro", "Não foi possível carregar as comandas.", "error");
     }
 }
 
-async function carregarCardapio() {
+document.getElementById("cadastrarComanda").addEventListener("click", async () => {
     try {
-        const response = await fetch(`${API_CARDAPIO_URL}/list`);
-        if (!response.ok) throw new Error("Erro ao carregar cardápio.");
+        const mesasResponse = await fetch("http://localhost:3333/mesa/list");
+        const garconsResponse = await fetch("http://localhost:3333/garcom/list");
+        if (!mesasResponse.ok || !garconsResponse.ok) throw new Error("Erro ao listar mesas ou garçons.");
 
-        cardapio = await response.json();
+        const mesas = await mesasResponse.json();
+        const garcons = await garconsResponse.json();
+
+        const { value: formValues } = await Swal.fire({
+            title: "Cadastrar Comanda",
+            html: `
+                <select id="mesaSelect" class="swal2-input">
+                    ${mesas.map((mesa) => `<option value="${mesa.id_mesa}">Mesa #${mesa.numero_mesa}</option>`).join("")}
+                </select>
+                <select id="garcomSelect" class="swal2-input">
+                    ${garcons.map((garcom) => `<option value="${garcom.id_garcom}">${garcom.nome}</option>`).join("")}
+                </select>
+            `,
+            focusConfirm: false,
+            preConfirm: () => ({
+                id_mesa: document.getElementById("mesaSelect").value,
+                id_garcom: document.getElementById("garcomSelect").value,
+            }),
+        });
+
+        if (!formValues) return;
+        const response = await fetch("http://localhost:3333/pedido/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formValues),
+        });
+
+        if (!response.ok) throw new Error("Erro ao criar a comanda.");
+
+        Swal.fire("Sucesso", "Comanda criada com sucesso!", "success");
+        listarComandas();
     } catch (error) {
-        console.error("Erro ao carregar cardápio:", error);
-        Swal.fire("Erro", "Não foi possível carregar o cardápio.", "error");
-    }
-}
-
-function selecionarMesa(mesa) {
-    mesaAtual = mesa;
-    mesaSelecionadaElement.textContent = `Mesa ${mesa.numero_mesa}`;
-    atualizarPedidos();
-}
-
-function atualizarPedidos() {
-    pedidoGridElement.innerHTML = ""; 
-
-    if (!mesaAtual.pedidos || mesaAtual.pedidos.length === 0) {
-        pedidoGridElement.textContent = "Nenhum pedido registrado.";
-        return;
-    }
-
-    mesaAtual.pedidos.forEach((pedido) => {
-        const pedidoDiv = document.createElement("div");
-        pedidoDiv.classList.add("pedido-item");
-
-        const nome = document.createElement("div");
-        nome.textContent = pedido.nome_produto;
-
-        const valor = document.createElement("div");
-        valor.classList.add("valor");
-        valor.textContent = `R$ ${pedido.preco.toFixed(2)}`;
-
-        pedidoDiv.appendChild(nome);
-        pedidoDiv.appendChild(valor);
-        pedidoGridElement.appendChild(pedidoDiv);
-    });
-}
-
-document.getElementById("adicionarPedido").addEventListener("click", async function () {
-    if (!mesaAtual) {
-        Swal.fire("Erro", "Selecione uma mesa primeiro!", "warning");
-        return;
-    }
-
-    const { value: itemIndex } = await Swal.fire({
-        title: "Escolha o item",
-        input: "select",
-        inputOptions: cardapio.reduce((options, item, index) => {
-            options[index] = `${item.nome_produto} - R$ ${item.preco.toFixed(2)}`;
-            return options;
-        }, {}),
-        inputPlaceholder: "Selecione um item",
-        showCancelButton: true,
-    });
-
-    if (itemIndex !== undefined) {
-        const itemSelecionado = cardapio[itemIndex];
-
-        if (!mesaAtual.pedidos) {
-            mesaAtual.pedidos = [];
-        }
-
-        mesaAtual.pedidos.push(itemSelecionado);
-
-        try {
-            await fetch(`${API_MESAS_URL}/update/${mesaAtual.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ pedidos: mesaAtual.pedidos }),
-            });
-
-            atualizarPedidos();
-            Swal.fire("Sucesso", `Item "${itemSelecionado.nome_produto}" adicionado com sucesso!`, "success");
-        } catch (error) {
-            console.error("Erro ao adicionar pedido:", error);
-            Swal.fire("Erro", "Não foi possível adicionar o pedido.", "error");
-        }
+        console.error("Erro ao cadastrar comanda:", error);
+        Swal.fire("Erro", "Não foi possível cadastrar a comanda.", "error");
     }
 });
 
-(async function inicializar() {
-    await carregarCardapio();
-    await carregarMesas();
-})();
+async function abrirProdutosDaComanda(idComanda) {
+    comandaSelecionada = idComanda;
+    try {
+        const response = await fetch(`http://localhost:3333/item-pedido/list/${idComanda}`);
+        if (!response.ok) throw new Error("Erro ao listar produtos da comanda.");
 
-document.getElementById("sairButton").addEventListener("click", function () {
-    window.location.href = "index.html";
+        const produtos = await response.json();
+        const produtoGrid = document.getElementById("produtoGrid");
+        produtoGrid.innerHTML = "";
+
+        produtos.forEach((produto) => {
+            const produtoDiv = document.createElement("div");
+            produtoDiv.classList.add("produto-item");
+            produtoDiv.innerHTML = `
+                <p><strong>${produto.produto.nome_produto}</strong></p>
+                <p>Quantidade: ${produto.quantidade}</p>
+                <p>Observações: ${produto.observacoes || "Nenhuma"}</p>
+            `;
+            produtoGrid.appendChild(produtoDiv);
+        });
+
+        document.getElementById("adicionarProdutoButton").style.display = "block";
+    } catch (error) {
+        console.error("Erro ao listar produtos da comanda:", error);
+        Swal.fire("Erro", "Não foi possível carregar os produtos.", "error");
+    }
+}
+
+document.getElementById("adicionarProdutoButton").addEventListener("click", async () => {
+    try {
+        const produtosResponse = await fetch("http://localhost:3333/product/list");
+        if (!produtosResponse.ok) throw new Error("Erro ao listar produtos.");
+
+        const produtos = await produtosResponse.json();
+
+        const { value: formValues } = await Swal.fire({
+            title: "Adicionar Produto",
+            html: `
+                <select id="produtoSelect" class="swal2-input">
+                    ${produtos.map((produto) => 
+                        `<option value="${produto.id_produto}">${produto.nome_produto} - R$ ${produto.preco}</option>`
+                    ).join("")}
+                </select>
+                <input id="quantidadeProduto" type="number" class="swal2-input" placeholder="Quantidade" min="1">
+                <textarea id="observacoesProduto" class="swal2-textarea" placeholder="Observações"></textarea>
+            `,
+            focusConfirm: false,
+            preConfirm: () => ({
+                id_produto: document.getElementById("produtoSelect").value,
+                quantidade: parseInt(document.getElementById("quantidadeProduto").value),
+                observacoes: document.getElementById("observacoesProduto").value,
+            }),
+        });
+
+        if (!formValues) return;
+
+        const response = await fetch("http://localhost:3333/item-pedido/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                id_pedido: comandaSelecionada,
+                ...formValues,
+            }),
+        });
+
+        if (!response.ok) throw new Error("Erro ao adicionar produto.");
+
+        Swal.fire("Sucesso", "Produto adicionado à comanda!", "success");
+        abrirProdutosDaComanda(comandaSelecionada);
+    } catch (error) {
+        console.error("Erro ao adicionar produto:", error);
+        Swal.fire("Erro", "Não foi possível adicionar o produto.", "error");
+    }
 });
